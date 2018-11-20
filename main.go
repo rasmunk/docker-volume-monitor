@@ -24,7 +24,6 @@ func removeVolumes(ctx context.Context, client *client.Client, volumes []*types.
 		fmt.Printf("%s Removing Volume %s \n", time.Now().Format(time.RFC3339), v.Name)
 		if err := client.VolumeRemove(ctx, v.Name, true); err != nil {
 			fmt.Printf("Failed to remove Volume %s Reason %s \n", v.Name, err)
-			return err
 		}
 		fmt.Printf("Removed Volume %s \n", v.Name)
 	}
