@@ -1,6 +1,6 @@
 .PHONY: help
 
-OWNER:=rasmunk
+OWNER:=nielsbohr
 TAG:=edge
 IMAGE:=docker-volume-monitor
 
