@@ -10,6 +10,14 @@
   version = "v0.4.11"
 
 [[projects]]
+  digest = "1:9914325226e5e662d76193dcba4cdd3f1cc02098431cb92fa5ae35505005ff74"
+  name = "github.com/Sirupsen/logrus"
+  packages = ["."]
+  pruneopts = ""
+  revision = "bdc0db8ead3853c56b7cd1ac2ba4e11b47d7da6b"
+  version = "v1.8.1"
+
+[[projects]]
   digest = "1:a9e4ff75555e4500e409dc87c1d708b090bb8dd77f889bbf266773f3dc23af70"
   name = "github.com/docker/distribution"
   packages = [
@@ -90,7 +98,10 @@
   branch = "master"
   digest = "1:0ad2730a94694f9968449f91f0311788b58b2822ff5eff299202e02f538c6027"
   name = "golang.org/x/sys"
-  packages = ["windows"]
+  packages = [
+    "unix",
+    "windows",
+  ]
   pruneopts = ""
   revision = "ec83556a53fe16b65c452a104ea9d1e86a671852"
 
@@ -98,6 +109,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/Sirupsen/logrus",
     "github.com/docker/docker/api/types",
     "github.com/docker/docker/api/types/filters",
     "github.com/docker/docker/api/types/volume",

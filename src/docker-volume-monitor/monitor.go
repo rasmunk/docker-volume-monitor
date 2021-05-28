@@ -1,15 +1,15 @@
 package main
 
-
 import (
-	"github.com/docker/docker/client"
-	"golang.org/x/net/context"
+	"flag"
+	"time"
+
+	log "github.com/Sirupsen/logrus"
+	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
 	volumetypes "github.com/docker/docker/api/types/volume"
-	"github.com/docker/docker/api/types"
-	"time"
-	"fmt"
-	"flag"
+	"github.com/docker/docker/client"
+	"golang.org/x/net/context"
 )
 
 func getVolumes(ctx context.Context, client *client.Client) (volumetypes.VolumesListOKBody, error) {
@@ -21,15 +21,35 @@ func getVolumes(ctx context.Context, client *client.Client) (volumetypes.Volumes
 	return volumes, nil
 }
 
+func volumeInUse(ctx context.Context, client *client.Client, volume *types.Volume) bool {
+	containers, err := client.ContainerList(ctx, types.ContainerListOptions{All: true})
+	if err != nil {
+		return false
+	}
+	inUse := false
+
+	for _, container := range containers {
+		for _, mount := range container.Mounts {
+			if mount.Name == volume.Name {
+				inUse = true
+			}
+		}
+	}
+
+	return inUse
+}
+
 func removeVolumes(ctx context.Context, client *client.Client, volumes []*types.Volume) error {
 	for _, v := range volumes {
-		fmt.Printf("%s Removing Volume %s \n",
-			time.Now().Format(time.RFC3339), v.Name)
-		if err := client.VolumeRemove(ctx, v.Name, true); err != nil {
-			fmt.Printf("Failed to remove Volume %s Reason %s \n",
-				v.Name, err)
+		if !volumeInUse(ctx, client, v) {
+			log.Infof("%s Removing Volume %s \n", time.Now().Format(time.RFC3339), v.Name)
+			if err := client.VolumeRemove(ctx, v.Name, true); err != nil {
+				log.Errorf("Failed to remove Volume %s Reason %s", v.Name, err)
+			} else {
+				log.Infof("Removed Volume %s", v.Name)
+			}
 		} else {
-			fmt.Printf("Removed Volume %s \n", v.Name)
+			log.Infof("")
 		}
 	}
 	return nil
@@ -53,16 +73,15 @@ func run() {
 	}
 
 	for {
-		fmt.Printf("%s Checking for volumes \n",
+		log.Infof("%s Checking for volumes \n",
 			time.Now().Format(time.RFC3339))
 		volumes, err := getVolumes(ctx, cli)
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Printf("%s Found %d volumes \n",
+		log.Infof("%s Found %d volumes \n",
 			time.Now().Format(time.RFC3339), len(volumes.Volumes))
-
 		if pruneUnused {
 			removeVolumes(ctx, cli, volumes.Volumes)
 		}

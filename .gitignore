@@ -12,3 +12,7 @@
 *.out
 
 .idea/
+
+.vscode/
+
+docker-volume-monitor
