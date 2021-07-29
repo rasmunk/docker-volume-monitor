@@ -1,6 +1,6 @@
 .PHONY: help
 
-OWNER:=nielsbohr
+OWNER:=ucphhpc
 TAG:=edge
 IMAGE:=docker-volume-monitor
 
