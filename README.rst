@@ -1,6 +1,4 @@
-====================
-docker-volume-monitor
-====================
+docker run --mount type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock ucphhpc/docker-volume-monitor:edge -prune-unused -interval 10
 
 Docker image that continuously checks for docker volumes on a given host, has two options for execution:
 
@@ -28,8 +26,8 @@ Build as a docker image (defaults to use the :edge tag)::
     # override the build tag, e.g
     make build TAG=latest
 
-Which produces an image called nielsbohr/docker-volume-monitor:edge by default, override the TAG variable in the makefile to change this.
+Which produces an image called ucphhpc/docker-volume-monitor:edge by default, override the TAG variable in the makefile to change this.
 To run a monitor container that continuously checks and removes unused volumes ::
 
-    docker run --mount type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock nielsbohr/docker-volume-monitor:edge -prune-unused -interval 10
+    docker run --mount type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock ucphhpc/docker-volume-monitor:edge -prune-unused -interval 10
 
