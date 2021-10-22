@@ -33,7 +33,7 @@ func volumeInUse(ctx context.Context, client *client.Client, volume *types.Volum
 	inUse := false
 
 	if debug {
-		log.Debugf("%s - Checking whether volume: %s is in use", currentTime(), volume.ID)
+		log.Debugf("%s - Checking whether volume: %s is in use", currentTime(), volume.Name)
 	}
 
 	for _, container := range containers {
@@ -43,7 +43,7 @@ func volumeInUse(ctx context.Context, client *client.Client, volume *types.Volum
 
 		for _, mount := range container.Mounts {
 			if debug {
-				log.Debugf("%s - Checking if mount: %s uses volume: %s", currentTime(), mount, volume.ID)
+				log.Debugf("%s - Checking if mount: %s uses volume: %s", currentTime(), mount, volume.Name)
 			}
 
 			if mount.Name == volume.Name {
