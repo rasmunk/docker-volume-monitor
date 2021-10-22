@@ -16,6 +16,7 @@ func currentTime() string {
 	return time.Now().Format(time.RFC3339)
 }
 
+
 func getVolumes(ctx context.Context, client *client.Client) (volumetypes.VolumesListOKBody, error) {
 	args := filters.Args{}
 	volumes, err := client.VolumeList(ctx, args)
@@ -37,13 +38,9 @@ func volumeInUse(ctx context.Context, client *client.Client, volume *types.Volum
 	}
 
 	for _, container := range containers {
-		if debug {
-			log.Debugf("%s - Checking container %s mounts", currentTime(), container.Mounts)
-		}
-
 		for _, mount := range container.Mounts {
 			if debug {
-				log.Debugf("%s - Checking if mount: %s uses volume: %s", currentTime(), mount, volume.Name)
+				log.Debugf("%s - Checking if mount: %s uses volume: %s", currentTime(), mount.Name, volume.Name)
 			}
 
 			if mount.Name == volume.Name {
