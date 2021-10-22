@@ -90,6 +90,10 @@ func run() {
 		panic(err)
 	}
 
+	if debug {
+		log.SetLevel(log.DebugLevel)
+	}
+
 	for {
 		log.Infof("%s - Checking for volumes", currentTime())
 		volumes, err := getVolumes(ctx, cli)
