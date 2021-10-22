@@ -31,3 +31,12 @@ To run a monitor container that continuously checks and removes unused volumes :
 
     docker run --mount type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock ucphhpc/docker-volume-monitor:edge -prune-unused -interval 10
 
+
+
+------------
+Contributing
+------------
+
+When contributing to this project, please use gofmt before commiting::
+
+    gofmt -w src/
